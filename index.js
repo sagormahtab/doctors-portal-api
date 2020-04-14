@@ -116,7 +116,29 @@ app.get('/prescription/:_id', (req, res) => {
             res.send(documents)
         }
     })
-    client.close();
+    //client.close();
+    });
+})
+
+app.get('/getPrescription/:_id', (req, res) => {
+    const theidID = req.params._id
+    const mongo = require('mongodb');
+    const o_id = new mongo.ObjectID(theidID);
+    console.log(theidID)
+    client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect(err => {
+    const collection = client.db("doctors-portal").collection("prescription");
+    collection.find({'_id': o_id}).toArray((err, documents) => {
+        if(err){
+            console.log(err);
+            res.status(500).send({message:err})
+            
+        }
+        else{
+            res.send(documents)
+        }
+    })
+    //client.close();
     });
 })
 
@@ -139,7 +161,7 @@ app.post('/updateAppointment/:_id', (req, res) => {
             }
         })
           
-        client.close();
+        //client.close();
       });
 })
 
